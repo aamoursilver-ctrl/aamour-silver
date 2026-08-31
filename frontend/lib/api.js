@@ -1,16 +1,24 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
 export async function getProducts(category) {
-  const url = category ? `${API_URL}/products?category=${category}` : `${API_URL}/products`;
-  const res = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    const url = category ? `${API_URL}/products?category=${category}` : `${API_URL}/products`;
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
 }
 
 export async function getProduct(slug) {
-  const res = await fetch(`${API_URL}/products/${slug}`, { cache: 'no-store' });
-  if (!res.ok) return null;
-  return res.json();
+  try {
+    const res = await fetch(`${API_URL}/products/${slug}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
 }
 
 export async function placeOrder(orderPayload) {
